@@ -1,0 +1,2 @@
+﻿* INDIRECT Y = CAARS_H/X = rs1800544/M = Fac1_CoeffVar sex age/C = 2/CONF = 95/PERCENT = 1/BOOT = 100000.
+INDIRECT Y = CAARS_H/X = rs1800544/M = Fac1_CoeffVar sex age/C = 2/CONF = 99/PERCENT = 1/BOOT = 100000.
