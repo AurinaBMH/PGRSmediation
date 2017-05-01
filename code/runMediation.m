@@ -1,4 +1,3 @@
-clear all
 
 % this script will run mediation analysis using the output of
 % runRegStats.m
@@ -72,17 +71,22 @@ for f = 1:length(matchFiles)
     
     load([matchDir,matchFiles(f).name]);
     conn = matchedData.mri.conn;
-    conn(isnan(conn)) = 0;                              % set NaNs to zero 
+    conn(isnan(conn)) = 0;                              % set NaNs to zero
     nNodes = size(conn, 1);
-    C = matchedData.mri.cov(:,2:end) ;                   % covariates
+    C = matchedData.mri.cov(:,2:end) ;  % covariates
+   % make C into double - was an error concatonating files
+    C1 = C(:,1); C1 = cell2mat(C1);
+    C2 = C(:,2); C2 = cell2mat(C2); C2 = str2num(C2);
+    C3(:,1)=C1; C3(:,2)=C2;
+    C=C3;
     
     for lv = 1:length(corrConnLatent)
       
         tic;
         % get indicies of edges to analyse
         pVals = corrConnLatent(lv).p;
-        pVals(linspace(1,numel(pVals),length(pVals))) = 1; 
-        %pVals = zerodiag(pVals,1);                       % set diagonal to 1
+        %pVals(linspace(1,numel(pVals),length(pVals))) = 1; 
+        pVals = zerodiag(pVals,1);                       % set diagonal to 1
        
         % set all pvals in lower triangle to 1, so that only upper triangle
         % is indexed
@@ -117,7 +121,9 @@ for f = 1:length(matchFiles)
             % variable
             M = [];
             M = squeeze(conn(indRow,indCol,:));
-
+            
+ 
+           
             % run mediation model
             [permCoeffs, permSims] = permutation_mediation(X,Y,M,W,C,'n_iter',nPerms);
             
